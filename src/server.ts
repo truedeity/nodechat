@@ -46,3 +46,4 @@ console.log("server is running on port ", port);
 
 
 //tsc --removeComments --module commonjs --target ES5 --outDir build src/server.ts
+//node build/server 
