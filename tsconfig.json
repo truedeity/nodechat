@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "commonjs",
+        "outDir": "build",
+         "files": [
+             "src/server.ts"
+         ]
+    }
+}
+
+//tsc --removeComments --module commonjs --target ES5 --outDir build src/server.ts

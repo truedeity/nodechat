@@ -17,6 +17,7 @@ export class UserMessage implements Message {
         }
 
         this.data = data;
+        
     }
 
 

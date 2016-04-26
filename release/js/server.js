@@ -11,7 +11,6 @@ server.on('connection', function (ws) {
         try {
             var userMessage = new models.UserMessage(message);
             broadcast(JSON.stringify(userMessage));
-            console.log('test');
         }
         catch (e) {
         }

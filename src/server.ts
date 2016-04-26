@@ -1,6 +1,3 @@
-
-
-
 /// <reference path="../declarations/node.d.ts" />
 /// <reference path="../declarations/ws.d.ts" />
 
@@ -24,6 +21,7 @@ server.on('connection', ws => {
             
             var userMessage: models.UserMessage = new models.UserMessage(message);
             broadcast(JSON.stringify(userMessage));
+            console.log('test');
             
         } catch (e) {
             
@@ -34,6 +32,7 @@ server.on('connection', ws => {
 
 
 function broadcast(data:string) :void {
+    
     server.clients.forEach(client => {
         
         client.send(data);
