@@ -9,7 +9,6 @@ var ts = require('gulp-typescript');
 var merge = require('merge2');
 
 
-
 //tsc --removeComments --module commonjs --target ES5 --outDir build src/server.ts
 
 var tsProject = ts.createProject({

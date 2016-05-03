@@ -9,10 +9,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-typescript": "^2.13.0",
-    "merge2": "^1.0.2",
+    "amqplib": "0.4.1",
+    "azure": "0.10.6",
+    "azure-sb": "0.10.2",
+    "fhir.js": "0.0.10",
+    "gulp": "3.9.1",
+    "gulp-typescript": "2.13.0",
+    "merge2": "1.0.2",
     "typescript": "1.8.10",
-    "ws": "^1.1.0"
+    "when": "2.4.0",
+    "ws": "1.1.0"
   }
 }

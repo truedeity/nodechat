@@ -11,7 +11,7 @@ server.on('connection', function (ws) {
         try {
             var userMessage = new models.UserMessage(message);
             broadcast(JSON.stringify(userMessage));
-            console.log('test');
+            console.log('test22');
         }
         catch (e) {
         }
@@ -20,6 +20,7 @@ server.on('connection', function (ws) {
 function broadcast(data) {
     server.clients.forEach(function (client) {
         client.send(data);
+        console.log("test");
     });
 }
 console.log("server is running on port ", port);

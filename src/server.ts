@@ -21,7 +21,7 @@ server.on('connection', ws => {
             
             var userMessage: models.UserMessage = new models.UserMessage(message);
             broadcast(JSON.stringify(userMessage));
-            console.log('test');
+            console.log('test22');
             
         } catch (e) {
             
@@ -36,7 +36,7 @@ function broadcast(data:string) :void {
     server.clients.forEach(client => {
         
         client.send(data);
-        
+        console.log("test")
     })
 }
 
