@@ -621,6 +621,18 @@ declare module "azure" {
 
     export class ServiceBusService {
 
+        //dans note: these were not part of the .d.ts , i needed to add them.  may need to see if it gets updated later.
+        createQueueIfNotExists(queuePath:string, callback:Azure.ServiceBus.Callback):void
+        receiveSubscriptionMessage(topic:string, subscriptionPath:string, callback:Azure.ServiceBus.Callback):void
+        receiveSubscriptionMessage(topic:string, subscriptionPath:string, options:any, callback:Azure.ServiceBus.Callback):void
+        receiveQueueMessage(queue:string, callback:Azure.ServiceBus.Callback):void
+        receiveQueueMessage(queue:string, options:any, callback:Azure.ServiceBus.Callback):void
+        deleteMessage(message:any, callback:Azure.ServiceBus.Callback):void
+        unlockMessage(message:any, callback:Azure.ServiceBus.Callback):void
+        sendQueueMessage(queue:string, message:any, callback:Azure.ServiceBus.Callback):void
+        sendTopicMessage(topic:string, message:any, callback:Azure.ServiceBus.Callback):void
+        listSubscriptions(message:any, callback:Azure.ServiceBus.Callback):void
+        listTopics(callback:Azure.ServiceBus.Callback):void
     }
 
     export class SqlService {

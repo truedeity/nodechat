@@ -1,48 +1,55 @@
 /// <reference path="../declarations/node.d.ts" />
-/// <reference path="../declarations/ws.d.ts" />
+/// <reference path="../declarations/azure.d.ts" />
+/// <reference path="../declarations/azure-sb.d.ts" />
+ 
 
-'use strict';
+import azure = require('azure');
+import utils = require("./sbUtils");
+var config = require("./config")
 
-import WebSocket = require("ws");
-import models = require("./models");
+var client = azure.createServiceBusService(config.ServiceBusEndpoint);
+var topic = config.Topic;
+var queue = config.Queue;
+var useQueue:boolean = config.UseQueue;
+var util:utils.ServiceBusUtility = new utils.ServiceBusUtility(client);
+
+console.log("Server is ready to listen for the messages");
 
 
-var port: number = process.env.PORT || 3000;
-var WebSocketServer = WebSocket.Server;
-
-var server = new WebSocketServer({ port: port });
 
 
-
-server.on('connection', ws => {
+if (useQueue) {
     
-    ws.on('message', message => {
-        try {
-            
-            var userMessage: models.UserMessage = new models.UserMessage(message);
-            broadcast(JSON.stringify(userMessage));
-            console.log('test22');
-            
-        } catch (e) {
-            
-        }
-    })
+    console.log("using queues");
     
-})
-
-
-function broadcast(data:string) :void {
-    
-    server.clients.forEach(client => {
+    util.receiveQueueMessage(queue, (error, message) => {
         
-        client.send(data);
-        console.log("test")
+        if(error) {
+            console.log(error);
+            return;
+        }
+        
+        console.log(message.body);
+        
     })
+    
+} else { 
+    
+    console.log("using topics");
+    
+    util.subscribe(topic, (error, message) => {
+        
+        if (error) {
+            console.log(error);
+            return;
+        }
+        
+        console.log(message.body);
+    
+        
+    });
+
+
 }
 
 
-console.log("server is running on port ", port);
-
-
-//tsc --removeComments --module commonjs --target ES5 --outDir build src/server.ts
-//node build/server 

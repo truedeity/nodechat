@@ -22,6 +22,8 @@ gulp.task('scripts', function() {
     var tsResult = gulp.src('src/*.ts')
                     .pipe(ts(tsProject));
 
+   // cache.clearAll();
+
     return merge([  
         tsResult.dts.pipe(gulp.dest('build')),
         tsResult.js.pipe(gulp.dest('build'))

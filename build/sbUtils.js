@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var ServiceBusUtility = (function () {
     function ServiceBusUtility(client) {
         this.client = client;
@@ -6,7 +6,7 @@ var ServiceBusUtility = (function () {
     ServiceBusUtility.prototype.getSubscriptions = function (topic, callback) {
         this.client.listSubscriptions(topic, function (error, result) {
             if (error) {
-                callback(error);
+                callback(error, result);
             }
             var subscriptions = result.map(function (subscription) {
                 return {
@@ -20,7 +20,7 @@ var ServiceBusUtility = (function () {
     ServiceBusUtility.prototype.getTopics = function (callback) {
         this.client.listTopics(function (error, result) {
             if (error) {
-                callback(error);
+                callback(error, result);
             }
             var topics = result.map(function (topic) {
                 return {
@@ -30,6 +30,26 @@ var ServiceBusUtility = (function () {
                 };
             });
             callback(null, topics);
+        });
+    };
+    ServiceBusUtility.prototype.sendTopicMessage = function (topic, message, callback) {
+        this.client.sendTopicMessage(topic, message, callback);
+    };
+    ServiceBusUtility.prototype.sendQueueMessage = function (queue, message, callback) {
+        this.client.sendQueueMessage(queue, message, callback);
+    };
+    ServiceBusUtility.prototype.receiveQueueMessage = function (queue, callback) {
+        var _this = this;
+        this.client.receiveQueueMessage(queue, callback);
+        setImmediate(function () {
+            _this.receiveQueueMessage(queue, callback);
+        });
+    };
+    ServiceBusUtility.prototype.subscribe = function (topic, callback) {
+        var _this = this;
+        this.client.receiveSubscriptionMessage(topic, "PatientPortalDev", { timeoutIntervalInS: 60 }, callback);
+        setImmediate(function () {
+            _this.subscribe(topic, callback);
         });
     };
     return ServiceBusUtility;

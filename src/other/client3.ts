@@ -1,5 +1,5 @@
 
-/// <reference path="../declarations/amqplib.d.ts" />
+/// <reference path="../../declarations/amqplib.d.ts" />
 
 import amqplib = require("amqplib")
 var connection = amqplib.connect("amqp://10.2.1.113")

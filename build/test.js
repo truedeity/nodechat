@@ -15,3 +15,10 @@ util.getSubscriptions(mytopic, function (error, message) {
     }
     console.log(message);
 });
+util.getTopics(function (error, message) {
+    if (error) {
+        console.log(error);
+        return;
+    }
+    console.log(message);
+});

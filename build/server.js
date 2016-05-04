@@ -1,28 +1,33 @@
 /// <reference path="../declarations/node.d.ts" />
-/// <reference path="../declarations/ws.d.ts" />
-'use strict';
-var WebSocket = require("ws");
-var models = require("./models");
-var port = process.env.PORT || 3000;
-var WebSocketServer = WebSocket.Server;
-var server = new WebSocketServer({ port: port });
-server.on('connection', function (ws) {
-    ws.on('message', function (message) {
-        try {
-            var userMessage = new models.UserMessage(message);
-            broadcast(JSON.stringify(userMessage));
-            console.log('test22');
+/// <reference path="../declarations/azure.d.ts" />
+/// <reference path="../declarations/azure-sb.d.ts" />
+"use strict";
+var azure = require('azure');
+var utils = require("./sbUtils");
+var config = require("./config");
+var client = azure.createServiceBusService(config.ServiceBusEndpoint);
+var topic = config.Topic;
+var queue = config.Queue;
+var useQueue = config.UseQueue;
+var util = new utils.ServiceBusUtility(client);
+console.log("Server is ready to listen for the messages");
+if (useQueue) {
+    console.log("using queues");
+    util.receiveQueueMessage(queue, function (error, message) {
+        if (error) {
+            console.log(error);
+            return;
         }
-        catch (e) {
-        }
-    });
-});
-function broadcast(data) {
-    server.clients.forEach(function (client) {
-        client.send(data);
-        console.log("test");
+        console.log(message.body);
     });
 }
-console.log("server is running on port ", port);
-//tsc --removeComments --module commonjs --target ES5 --outDir build src/server.ts
-//node build/server 
+else {
+    console.log("using topics");
+    util.subscribe(topic, function (error, message) {
+        if (error) {
+            console.log(error);
+            return;
+        }
+        console.log(message.body);
+    });
+}

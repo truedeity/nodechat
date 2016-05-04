@@ -5,13 +5,11 @@
 
 
 import azure = require('azure');
-import utils = require("./sbUtils")
+import utils = require("./sbUtils");
 
 
-var client:any = azure.createServiceBusService("Endpoint=sb://shcpatientportal-dev.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7Y/K3coL51vIPEqg9uELnQwJFllt7QTy7hgts4mMEmg=");
+var client = azure.createServiceBusService("Endpoint=sb://shcpatientportal-dev.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7Y/K3coL51vIPEqg9uELnQwJFllt7QTy7hgts4mMEmg=");
 var mytopic = 'fhir_datasync_topic_dev';
-
-
 
 var util:utils.ServiceBusUtility = new utils.ServiceBusUtility(client);
 
@@ -23,7 +21,17 @@ util.getSubscriptions(mytopic, (error, message) => {
         return;
         
     }
-    
+     
     console.log(message);
     
 })
+
+util.getTopics((error, message) => {
+    if(error) {
+        console.log(error); 
+        return;
+    }
+    
+    console.log(message);
+})
+
