@@ -16,8 +16,6 @@ var util:utils.ServiceBusUtility = new utils.ServiceBusUtility(client);
 console.log("Server is ready to listen for the messages");
 
 
-
-
 if (useQueue) {
     
     console.log("using queues");
@@ -51,5 +49,3 @@ if (useQueue) {
 
 
 }
-
-

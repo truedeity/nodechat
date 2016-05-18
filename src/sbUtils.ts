@@ -59,24 +59,28 @@ export class ServiceBusUtility {
     }
     
     receiveQueueMessage(queue:string, callback:Azure.ServiceBus.Callback) {
-        this.client.receiveQueueMessage(queue, callback);
-        
-        setImmediate(() => {
-           this.receiveQueueMessage(queue, callback);
-        })
-        
+        this.client.receiveQueueMessage(queue, { isPeekLock: true }, (error, message) => {
+            callback(error,message);
+            setImmediate(() => {
+                this.receiveQueueMessage(queue, callback);
+            })
+        });
     }
     
     
     subscribe(topic:string, callback:Azure.ServiceBus.Callback) {
-        this.client.receiveSubscriptionMessage(topic, "PatientPortalDev", { timeoutIntervalInS: 60 }, callback);
+        this.client.receiveSubscriptionMessage(topic, "PatientPortalDev", (error, message) => {
+            callback(error, message);
+            setImmediate(() => {
+                this.subscribe(topic, callback);
+            });
+        });
        
-         setImmediate(() => {
-             this.subscribe(topic, callback);
-         })
+         
     }    
     
     
+  
     
 }
     

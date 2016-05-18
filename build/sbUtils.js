@@ -40,16 +40,20 @@ var ServiceBusUtility = (function () {
     };
     ServiceBusUtility.prototype.receiveQueueMessage = function (queue, callback) {
         var _this = this;
-        this.client.receiveQueueMessage(queue, callback);
-        setImmediate(function () {
-            _this.receiveQueueMessage(queue, callback);
+        this.client.receiveQueueMessage(queue, { isPeekLock: true }, function (error, message) {
+            callback(error, message);
+            setImmediate(function () {
+                _this.receiveQueueMessage(queue, callback);
+            });
         });
     };
     ServiceBusUtility.prototype.subscribe = function (topic, callback) {
         var _this = this;
-        this.client.receiveSubscriptionMessage(topic, "PatientPortalDev", { timeoutIntervalInS: 60 }, callback);
-        setImmediate(function () {
-            _this.subscribe(topic, callback);
+        this.client.receiveSubscriptionMessage(topic, "PatientPortalDev", function (error, message) {
+            callback(error, message);
+            setImmediate(function () {
+                _this.subscribe(topic, callback);
+            });
         });
     };
     return ServiceBusUtility;
